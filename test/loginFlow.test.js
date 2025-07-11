@@ -1,7 +1,6 @@
 const puppeteer = require("puppeteer");
 const expect = require("chai").expect;
 const should = require("chai").should();
-const { sleep } = require("../utils");
 
 describe("Login flow", function () {
   let browser;
