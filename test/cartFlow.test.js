@@ -105,6 +105,42 @@ describe("Cart flow", function () {
     expect(cartBadgeValue).to.equals("3");
   });
 
+  it("should add address", async function () {
+    await page.goto("https://creative-space.storehippo.com/en/account/address");
+
+    Promise.all([page.waitForNavigation({ waitUntil: "networkidle0" })]);
+
+    const selector = 'a[ng-click="Edit1(1)"][title="Add Address"]';
+
+    await page.waitForSelector(selector);
+    await page.click(selector);
+    await sleep(1000);
+
+    await Promise.allSettled([
+      page.waitForSelector("#full_name"),
+      page.waitForSelector("#address"),
+      page.waitForSelector("#city"),
+      page.waitForSelector("#zip"),
+      page.waitForSelector("#phone"),
+    ]);
+
+    await page.type("#full_name", "Babiyon Clement C", { delay: 50 });
+    await page.type("#address", "1/77 Pattabiram street, Arassur, Sirakali", {
+      delay: 50,
+    });
+    await page.type("#city", "Mayiladuthurai");
+    await page.type("#zip", "609114");
+    await page.type("#phone", "6374917474");
+
+    await page.waitForSelector("#country");
+    await page.select("#country", "string:IN");
+
+    await page.waitForSelector("#state");
+    await page.select("#state", "string:Tamil Nadu");
+
+    await page.click("button[type='submit']");
+  });
+
   afterEach(async function () {
     await page.close();
   });
